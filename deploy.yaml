@@ -1,0 +1,22 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+
+    - name: Ensure Docker is running
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Copy data-analytics-app configuration
+      copy:
+        src: data-analytics-app
+        dest: /home/gursharan/data-analytics-app
+
+    - name: Deploy Application
+      command: kubectl apply -f /home/gursharan/data-analytics-app
